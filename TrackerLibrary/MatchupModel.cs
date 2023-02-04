@@ -15,5 +15,3 @@ namespace TrackerLibrary
         public int MatchupRound { get; set; }
     }
 }
-
-//This is just to check the gitbash
