@@ -29,14 +29,17 @@ namespace TrackerLibrary
             PlaceName = placeName;
 
             int placeNumberValue = 0;
-            int.TryParse(placeNumber, out placeNumberValue);
-            PlaceNumber = placeNumberValue;
+            int.TryParse(placeNumber, out placeNumberValue); //check for valid int value and output to the out variable if true.
+            PlaceNumber = placeNumberValue;                  // Assign the final value.
 
             decimal prizeAmountValue = 0;
             decimal.TryParse(prizeAmount,out prizeAmountValue);
             PrizeAmount= prizeAmountValue;
 
             double prizePercentageValue = 0;
+            double.TryParse(prizePercentage,out prizePercentageValue);
+            PrizePercentage= prizePercentageValue;
+
 
         }
 
