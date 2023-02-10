@@ -14,11 +14,45 @@ namespace TrackerUI
 {
     public partial class CreateTeamForm : Form
     {
+
+        private List<PersonModel> availableTeamMembers = GlobalConfig.Connection.GetPerson_All();
+        private List<PersonModel> selectedTeamMembers = new List<PersonModel>();
+
         public CreateTeamForm()
         {
             InitializeComponent();
+
+            //CreateSampledData();
+
+            WireUpLists();
         }
 
+        private void CreateSampledData()
+        {
+            availableTeamMembers.Add(new PersonModel { FirstName = "Kshitiz", LastName = "Dhakal" });
+            availableTeamMembers.Add(new PersonModel { FirstName = "Hello", LastName= "World" });
+
+            selectedTeamMembers.Add(new PersonModel { FirstName = "Dumb", LastName= "Person" });
+            selectedTeamMembers.Add(new PersonModel { FirstName = "Happy", LastName = "Life" });
+
+
+        }
+
+
+        private void WireUpLists()
+        {
+
+            selectTeamMemberDropDown.DataSource = null;
+
+            selectTeamMemberDropDown.DataSource = availableTeamMembers;
+            selectTeamMemberDropDown.DisplayMember = "FullName";
+
+            teamMembersListBox.DataSource = null;
+
+            teamMembersListBox.DataSource = selectedTeamMembers;
+            teamMembersListBox.DisplayMember = "FullName";
+
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             if(ValidateForm())
@@ -76,6 +110,21 @@ namespace TrackerUI
         private void tournamentPlayersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void CreateTeamForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void addMemberButton_Click(object sender, EventArgs e)
+        {
+            PersonModel p = (PersonModel)selectTeamMemberDropDown.SelectedValue;
+
+            availableTeamMembers.Remove(p);
+            selectedTeamMembers.Add(p);
+
+            WireUpLists();
         }
     }
 }

@@ -21,18 +21,12 @@ namespace TrackerLibrary.Models
 
         public string CellPhoneNumber { get; set; }
 
-        //public PersonModel()
-        //{
-
-        //}
-
-        //public PersonModel(string firstName, string lastName, string emailAddress, string cellphoneNumber)
-        //{
-
-        //    FirstName= firstName;
-        //    LastName= lastName;
-        //    EmailAddress= emailAddress;
-        //    CellPhoneNumber= cellphoneNumber;
-        //}
+        public string FullName
+        {
+            get 
+            {
+                return $"{ FirstName } { LastName }";
+            }
+        }
     }
 }
