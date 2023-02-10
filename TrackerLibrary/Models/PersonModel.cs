@@ -20,5 +20,19 @@ namespace TrackerLibrary.Models
         public string EmailAddress { get; set; }
 
         public string CellPhoneNumber { get; set; }
+
+        //public PersonModel()
+        //{
+
+        //}
+
+        //public PersonModel(string firstName, string lastName, string emailAddress, string cellphoneNumber)
+        //{
+
+        //    FirstName= firstName;
+        //    LastName= lastName;
+        //    EmailAddress= emailAddress;
+        //    CellPhoneNumber= cellphoneNumber;
+        //}
     }
 }
