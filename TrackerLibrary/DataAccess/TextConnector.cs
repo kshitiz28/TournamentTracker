@@ -127,7 +127,7 @@ namespace TrackerLibrary.DataAccess
 
             tournaments.Add(model);
 
-            tournaments.SaveToTournamentFile();
+            tournaments.SaveToTournamentFile(TournamentFile);
 
             return model;
 
