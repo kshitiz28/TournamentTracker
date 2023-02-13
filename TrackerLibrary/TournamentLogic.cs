@@ -16,7 +16,12 @@ namespace TrackerLibrary
 
         public static void CreateRounds(TournamentModel model)
         {
+            List<TeamModel> randomizedTeams = RandomizeTeamOrder(model.EnteredTeams);
+        }
 
+        private static List<TeamModel> RandomizeTeamOrder(List<TeamModel> teams) 
+        {
+            return teams.OrderBy( x => Guid.NewGuid()).ToList();
         }
     }
 }
