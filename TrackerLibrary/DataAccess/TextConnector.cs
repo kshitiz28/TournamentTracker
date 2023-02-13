@@ -21,6 +21,10 @@ namespace TrackerLibrary.DataAccess
 
         private const string TournamentFile = "TournamentModels.csv";
 
+        private const string MatchupFile = "MatchupModels.csv";
+
+        private const string MatchupEntryFile = "MatchupEntryModels.csv";
+
 
         public PersonModel CreatePerson(PersonModel model)
         {
@@ -124,6 +128,8 @@ namespace TrackerLibrary.DataAccess
                 currentId = tournaments.OrderByDescending(x => x.Id).First().Id + 1;
             }
             model.Id = currentId;
+
+            model.SaveRoundsToFile(model, MatchupFile, MatchupEntryFile);
 
             tournaments.Add(model);
 
