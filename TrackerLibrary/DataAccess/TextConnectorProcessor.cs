@@ -443,9 +443,14 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             List<string> lines = new List<string>();
             foreach (MatchupModel m in matchups)
             {
-                lines.Add($"{ m.Id }, { m.Entries }")
+                string winner = "";
+                if (m.Winner != null)
+                {
+                    winner = m.Winner.Id.ToString();
+                }
+                lines.Add($"{m.Id}, { ConvertMatchupEntryListToString(m.Entries) },{ winner }, { m.MatchupRound }");
             }
-
+            File.WriteAllLines(GlobalConfig.MatchupFile.FullFilePath(), lines);
         }
 
         public static void SaveEntryToFile(this MatchupEntryModel entry, string matchupEntryFile)
@@ -480,18 +485,18 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 
 
         }
-        private static string ConvertMatchupEntryListToString(List<MatchupModel> prizes)
+        private static string ConvertMatchupEntryListToString(List<MatchupEntryModel> entries)
         {
             string output = "";
 
-            if (prizes.Count == 0)
+            if (entries.Count == 0)
             {
                 return "";
             }
 
-            foreach (MatchupModel p in prizes)
+            foreach (MatchupEntryModel e in entries)
             {
-                output += $"{p.Id}|";
+                output += $"{e.Id}|";
             }
 
             output = output.Substring(0, output.Length - 1); //take substring without the last '|'
