@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TrackerLibrary.Models
 {
-    public class PrizeModel
+    public class MatchupModel
     {
 
         public int Id { get; set; }
@@ -18,12 +18,12 @@ namespace TrackerLibrary.Models
 
         public double PrizePercentage { get; set; }
 
-        public PrizeModel()
+        public MatchupModel()
         {
 
         }
 
-        public PrizeModel(string placeName, string placeNumber, string prizeAmount, string prizePercentage)
+        public MatchupModel(string placeName, string placeNumber, string prizeAmount, string prizePercentage)
         {
 
             PlaceName = placeName;
