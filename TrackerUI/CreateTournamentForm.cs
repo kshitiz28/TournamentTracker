@@ -20,7 +20,7 @@ namespace TrackerUI
 
         List<TeamModel> selectedTeams = new List<TeamModel>();
 
-        List<MatchupModel> selectedPrizes = new List<MatchupModel>();
+        List<PrizeModel> selectedPrizes = new List<PrizeModel>();
         public CreateTournamentForm()
         {
             InitializeComponent();
@@ -77,7 +77,7 @@ namespace TrackerUI
             frm.Show();
         }
 
-        public void PrizeComplete(MatchupModel model)
+        public void PrizeComplete(PrizeModel model)
         {
 
             // Get back from the form a prizeModel
@@ -115,7 +115,7 @@ namespace TrackerUI
 
         private void removeSelectedPrizeButton_Click(object sender, EventArgs e)
         {
-            MatchupModel p = (MatchupModel)prizesListBox.SelectedValue;
+                PrizeModel p = (PrizeModel)prizesListBox.SelectedValue;
 
             if (p != null)
             {

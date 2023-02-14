@@ -9,6 +9,6 @@ namespace TrackerUI
 {
     public interface IPrizeRequester
     {
-        void PrizeComplete(MatchupModel model);
+        void PrizeComplete(PrizeModel model);
     }
 }

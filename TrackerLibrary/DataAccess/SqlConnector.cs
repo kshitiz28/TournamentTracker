@@ -47,7 +47,7 @@ namespace TrackerLibrary.DataAccess
         /// </summary>
         /// <param name="model">The prize information.</param>
         /// <returns>The prize information,including the unique identifier.</returns>
-        public MatchupModel CreatePrize(MatchupModel model)
+        public PrizeModel CreatePrize(PrizeModel model)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GlobalConfig.CnnString(db)))
             {
@@ -156,7 +156,7 @@ namespace TrackerLibrary.DataAccess
 
         private void SaveTournamentPrizes(IDbConnection connection, TournamentModel model)
         {
-            foreach (MatchupModel pz in model.Prizes)
+            foreach (PrizeModel pz in model.Prizes)
             {
                 var p = new DynamicParameters();
                 p = new DynamicParameters();

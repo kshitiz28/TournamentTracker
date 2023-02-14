@@ -29,7 +29,7 @@ namespace TrackerUI
         {
             if(ValidateForm())
             {
-                MatchupModel model = new MatchupModel(
+                PrizeModel model = new PrizeModel(
                     placeNameValue.Text,
                     placeNumberValue.Text,
                     prizeAmountValue.Text,
