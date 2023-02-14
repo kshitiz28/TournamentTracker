@@ -48,12 +48,12 @@ namespace TrackerLibrary.DataAccess
         }
 
         //TODO - Wire up the CreatePrize for text files.
-        public MatchupModel CreatePrize(MatchupModel model)
+        public PrizeModel CreatePrize(PrizeModel model)
         {
 
             // Load the text file and Convert the text to List<PrizeModel>
 
-            List<MatchupModel> prizes = PrizesFile.FullFilePath().LoadFile().ConvertToPrizeModels();
+            List<PrizeModel> prizes = PrizesFile.FullFilePath().LoadFile().ConvertToPrizeModels();
 
 
             //Find the max ID
