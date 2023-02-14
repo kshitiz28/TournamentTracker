@@ -39,15 +39,15 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             return File.ReadAllLines(file).ToList();
         }
 
-        public static List<MatchupModel> ConvertToPrizeModels(this List<string> lines)
+        public static List<PrizeModel> ConvertToPrizeModels(this List<string> lines)
         {
-            List<MatchupModel> output = new List<MatchupModel>();
+            List<PrizeModel> output = new List<PrizeModel>();
 
             foreach(string line in lines) 
             {
                 string[] cols = line.Split(',');
 
-                MatchupModel p = new MatchupModel();
+                PrizeModel p = new PrizeModel();
                 p.Id = int.Parse(cols[0]);
                 p.PlaceNumber = int.Parse(cols[1]);
                 p.PlaceName = cols[2];
@@ -114,11 +114,11 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             return output;
 
         }
-        public static void SaveToPrizeFile(this List<MatchupModel> models, string fileName)
+        public static void SaveToPrizeFile(this List<PrizeModel> models, string fileName)
         {
             List<string> lines = new List<string>();
 
-            foreach(MatchupModel p in models)
+            foreach(PrizeModel p in models)
             {
                 lines.Add($"{ p.Id },{ p.PlaceNumber },{ p.PlaceName },{ p.PrizeAmount },{ p.PrizePercentage }");
             }
@@ -184,7 +184,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 
             List<TeamModel> teams = teamFileName.FullFilePath().LoadFile().ConvertToTeamModels(peopleFileName);
 
-            List<MatchupModel> prizes = prizeFileName.FullFilePath().LoadFile().ConvertToPrizeModels();
+            List<PrizeModel> prizes = prizeFileName.FullFilePath().LoadFile().ConvertToPrizeModels();
 
             foreach(string line in lines) 
             {
@@ -272,7 +272,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             return output;
         }
 
-        private static string ConvertPrizeListToString(List<MatchupModel> prizes)
+        private static string ConvertPrizeListToString(List<PrizeModel> prizes)
         {
             string output = "";
 
@@ -281,7 +281,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                 return "";
             }
 
-            foreach (MatchupModel p in prizes)
+            foreach (PrizeModel p in prizes)
             {
                 output += $"{p.Id}|";
             }
@@ -439,6 +439,13 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             }
 
             // save the file
+
+            List<string> lines = new List<string>();
+            foreach (MatchupModel m in matchups)
+            {
+                lines.Add($"{ m.Id }, { m.Entries }")
+            }
+
         }
 
         public static void SaveEntryToFile(this MatchupEntryModel entry, string matchupEntryFile)
@@ -455,6 +462,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             entry.Id = currentId;
             entries.Add(entry);
 
+            // save to file
             List<string> lines = new List<string>();
 
             foreach (MatchupEntryModel e in entries)
@@ -470,7 +478,27 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 
             File.WriteAllLines(GlobalConfig.MatchupEntryFile.FullFilePath(), lines);
 
-            // save to file
+
         }
+        private static string ConvertMatchupEntryListToString(List<MatchupModel> prizes)
+        {
+            string output = "";
+
+            if (prizes.Count == 0)
+            {
+                return "";
+            }
+
+            foreach (MatchupModel p in prizes)
+            {
+                output += $"{p.Id}|";
+            }
+
+            output = output.Substring(0, output.Length - 1); //take substring without the last '|'
+
+            return output;
+
+        }
+
     }
 }
