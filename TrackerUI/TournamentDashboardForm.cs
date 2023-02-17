@@ -18,5 +18,3 @@ namespace TrackerUI
         }
     }
 }
-
-// this is just to test push
