@@ -245,6 +245,8 @@ namespace TrackerLibrary.DataAccess
             {
                 output = connection.Query<TournamentModel>("dbo.spTournaments_GetAll").ToList();
 
+                var p = new DynamicParameters();
+
 
                 foreach (TournamentModel t in output)
                 {
@@ -257,13 +259,13 @@ namespace TrackerLibrary.DataAccess
 
                     foreach (TeamModel team in t.EnteredTeams)
                     {
-                        var p = new DynamicParameters();
+                        p = new DynamicParameters();
                         p.Add("@TeamId", team.Id);
 
                         team.TeamMembers = connection.Query<PersonModel>("dbo.spTeamMembers_GetByTeam", p, commandType: CommandType.StoredProcedure).ToList();
                     }
 
-                    var p = new DynamicParameters();
+                    p = new DynamicParameters();
                     p.Add("@TournamentId", t.Id);
 
                     //Populate Rounds
@@ -276,6 +278,27 @@ namespace TrackerLibrary.DataAccess
 
                         //Populate Rounds
                         m.Entries = connection.Query<MatchupEntryModel>("dbo.spMatchupEntries_GetByMatchup", p, commandType: CommandType.StoredProcedure).ToList();
+
+
+                        List<TeamModel> allTeams = GetTeam_All();
+
+                        if(m.WinnerID > 0)
+                        {
+                            m.Winner = allTeams.Where(x => x.Id == m.WinnerID).First();
+                        }
+
+                        foreach( var me in m.Entries)
+                        {
+                            if(me.TeamCompetingId > 0)
+                            {
+                                me.TeamCompeting = allTeams.Where(x => x.Id == me.TeamCompetingId).First();
+                            }
+
+                            if(me.ParentMatchupId > 0)
+                            {
+                                me.ParentMatchup = matchups.Where(x=> x.Id == me.ParentMatchupId).First();
+                            }
+                        }
                     }
 
                 }
