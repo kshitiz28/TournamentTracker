@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using TrackerLibrary;
 using TrackerLibrary.Models;
 
 namespace TrackerUI
@@ -88,9 +89,26 @@ namespace TrackerUI
                     }
                 }
             }
+            if(selectedMatchups.Count > 0) 
+            {
+                LoadMatchup(selectedMatchups.First());
+            }
 
-            LoadMatchup(selectedMatchups.First());
+            DisplayMatchupInfo();
+        }
 
+        private void DisplayMatchupInfo()
+        {
+            bool isVisible = (selectedMatchups.Count > 0);
+
+            teamOneName.Visible= isVisible;
+            teamOneScoreLabel.Visible= isVisible;
+            teamOneScoreValue.Visible= isVisible;
+            teamTwoName.Visible= isVisible;
+            teamTwoScoreLabel.Visible= isVisible;
+            teamTwoScoreValue.Visible= isVisible;
+            versusLabel.Visible= isVisible;
+            scoreButton.Visible= isVisible;
         }
 
         private void LoadMatchup(MatchupModel m)
@@ -200,6 +218,9 @@ namespace TrackerUI
                 MessageBox.Show("I do not handle tie games."); 
             }
 
+            LoadMatchups((int)roundDropDown.SelectedItem);
+
+            GlobalConfig.Connection.UpdateMatchup(m);
         }
     }
 }
