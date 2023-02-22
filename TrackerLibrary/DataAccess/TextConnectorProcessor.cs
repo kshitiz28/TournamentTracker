@@ -340,7 +340,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                     // Store the id
                     // Save the matchup record
 
-                    matchup.SaveMatchupToFile(GlobalConfig.MatchupFile,GlobalConfig.MatchupEntryFile);
+                    matchup.SaveMatchupToFile();
 
                 }
             }
@@ -423,7 +423,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                 {
                     List<string> matchingTeams = new List<string>();
                     matchingTeams.Add(team);
-                    return matchingTeams.ConvertToTeamModels(GlobalConfig.PeopleFile).First();
+                    return matchingTeams.ConvertToTeamModels().First();
                 }
             }
             return null;
@@ -476,7 +476,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             return output;
         }
 
-        public static void SaveMatchupToFile(this MatchupModel matchup, string matchupFile,string matchupEntryFile)
+        public static void SaveMatchupToFile(this MatchupModel matchup)
         {
 
             List<MatchupModel> matchups = GlobalConfig.MatchupFile.FullFilePath().LoadFile().ConvertToMatchupModels();
@@ -508,7 +508,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 
             foreach (MatchupEntryModel entry in matchup.Entries)
             {
-                entry.SaveEntryToFile(matchupEntryFile);
+                entry.SaveEntryToFile();
             }
 
             // save the file
@@ -565,7 +565,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             File.WriteAllLines(GlobalConfig.MatchupFile.FullFilePath(), lines);
         }
 
-        public static void SaveEntryToFile(this MatchupEntryModel entry, string matchupEntryFile)
+        public static void SaveEntryToFile(this MatchupEntryModel entry)
         {
             List<MatchupEntryModel> entries = GlobalConfig.MatchupEntryFile.FullFilePath().LoadFile().ConvertToMatchupEntryModels();
 
