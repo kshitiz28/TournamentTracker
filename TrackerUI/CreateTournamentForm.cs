@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -160,6 +161,8 @@ namespace TrackerUI
             // Ceate all of the team entries
 
             GlobalConfig.Connection.CreateTournament(tm);
+
+            TournamentLogic.UpdateTournamentResults(tm);
 
             TournamentViewerForm frm = new TournamentViewerForm(tm);
             frm.Show();

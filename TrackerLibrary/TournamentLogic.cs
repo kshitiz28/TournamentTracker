@@ -27,7 +27,7 @@ namespace TrackerLibrary
 
             CreateOtherRounds(model,rounds);
 
-            UpdateTournamentResults(model);
+            //UpdateTournamentResults(model);
         }
 
         public static void UpdateTournamentResults(TournamentModel model)
