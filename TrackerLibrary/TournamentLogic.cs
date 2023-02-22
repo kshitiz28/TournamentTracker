@@ -26,6 +26,8 @@ namespace TrackerLibrary
             model.Rounds.Add(CreateFirstRound(byes, randomizedTeams));
 
             CreateOtherRounds(model,rounds);
+
+            UpdateTournamentResults(model);
         }
 
         public static void UpdateTournamentResults(TournamentModel model)
@@ -39,40 +41,44 @@ namespace TrackerLibrary
                 {
                     if (rm.Winner != null && (rm.Entries.Any(x => x.Score !=0) || rm.Entries.Count == 1))
                     {
-                        toScore.Any(rm);
+                        toScore.Add(rm);
                     }
                 }
             }
 
             MarkWinnerInMatchups(toScore);
 
-            AdvanceWinners(toScore);
+            AdvanceWinners(toScore,model);
 
+            toScore.ForEach(x => GlobalConfig.Connection.UpdateMatchup(x));
 
-
-            //GlobalConfig.Connection.UpdateMatchup(m);
         }
 
-        private static void AdvanceWinners(List<MatchupModel> models)
+        private static void AdvanceWinners(List<MatchupModel> models,TournamentModel tournament)
         {
-            //foreach (List<MatchupModel> round in model.Rounds)
-            //{
-            //    foreach (MatchupModel rm in round)
-            //    {
-            //        foreach (MatchupEntryModel me in rm.Entries)
-            //        {
-            //            if (me.ParentMatchup != null)
-            //            {
-            //                if (me.ParentMatchup.Id == m.Id)
-            //                {
-            //                    me.TeamCompeting = m.Winner;
-            //                    GlobalConfig.Connection.UpdateMatchup(rm);
-            //                }
-            //            }
-            //        }
-            //    }
 
-            //}
+            foreach (MatchupModel m in models)
+            {
+                foreach (List<MatchupModel> round in tournament.Rounds)
+                {
+                    foreach (MatchupModel rm in round)
+                    {
+                        foreach (MatchupEntryModel me in rm.Entries)
+                        {
+                            if (me.ParentMatchup != null)
+                            {
+                                if (me.ParentMatchup.Id == m.Id)
+                                {
+                                    me.TeamCompeting = m.Winner;
+                                    GlobalConfig.Connection.UpdateMatchup(rm);
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+
         }
 
         private static void MarkWinnerInMatchups(List<MatchupModel> models)
