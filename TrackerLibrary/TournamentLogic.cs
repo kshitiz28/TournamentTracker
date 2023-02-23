@@ -60,13 +60,13 @@ namespace TrackerLibrary
             if(endingRound > startingRound) 
             {
                 //Alert Users
-                AlertUsersToNewRound(model);
+                model.AlertUsersToNewRound();
 
             }
 
         }
 
-        private static void AlertUsersToNewRound(this TournamentModel  model)
+        public static void AlertUsersToNewRound(this TournamentModel  model)
         {
             int currentRoundNumber = model.CheckCurrentRound();
             List<MatchupModel> currentRound = model.Rounds.Where(x=> x.First().MatchupRound == currentRoundNumber).First();
@@ -91,7 +91,7 @@ namespace TrackerLibrary
                 return;
             }
 
-            List<string> to = new List<string>();
+            string to = "";
             string subject = "";
 
             StringBuilder body = new StringBuilder();
@@ -116,7 +116,7 @@ namespace TrackerLibrary
                 body.AppendLine("~Tournament Tracker");
             }
 
-            to.Add(p.EmailAddress);
+            to = p.EmailAddress;
 
             EmailLogic.SendEmail(to, subject, body.ToString());
         }
