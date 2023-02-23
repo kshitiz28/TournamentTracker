@@ -160,8 +160,44 @@ namespace TrackerUI
             LoadMatchups((int)roundDropDown.SelectedItem);
         }
 
+        private bool IsValidData()
+        {
+            bool output = true;
+
+            double teamOneScore = 0;
+            double teamTwoScore = 0;
+
+            bool scoreOneValid = double.TryParse(teamOneScoreValue.Text, out teamOneScore);
+
+            bool scoreTwoValid = double.TryParse(teamTwoScoreValue.Text, out teamTwoScore);
+
+            if(!scoreOneValid || !scoreTwoValid)
+            {
+                output = false;
+            }
+
+            if(teamOneScore == 0 && teamTwoScore == 0) 
+            {
+                output = false;
+            }
+
+            if(teamOneScore == teamTwoScore)
+            {
+                output= false;
+            }
+
+            return output;
+
+        }
+
         private void scoreButton_Click(object sender, EventArgs e)
         {
+
+            if (!IsValidData())
+            {
+                MessageBox.Show("You need to enter valid data before we can score this matchup.");
+            }
+
             MatchupModel m = (MatchupModel)matchupListBox.SelectedItem;
             double teamOneScore = 0;
             double teamTwoScore = 0;
@@ -204,7 +240,17 @@ namespace TrackerUI
                 }
             }
 
-            TournamentLogic.UpdateTournamentResults(tournament);
+            try
+            {
+                TournamentLogic.UpdateTournamentResults(tournament);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"The application had the following error: { ex.Message }");
+                throw;
+            }
+
+            
 
             LoadMatchups((int)roundDropDown.SelectedItem);
 
