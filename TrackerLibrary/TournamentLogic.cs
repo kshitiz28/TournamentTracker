@@ -60,8 +60,65 @@ namespace TrackerLibrary
             if(endingRound > startingRound) 
             {
                 //Alert Users
+                AlertUsersToNewRound(model);
+
             }
 
+        }
+
+        private static void AlertUsersToNewRound(this TournamentModel  model)
+        {
+            int currentRoundNumber = model.CheckCurrentRound();
+            List<MatchupModel> currentRound = model.Rounds.Where(x=> x.First().MatchupRound == currentRoundNumber).First();
+
+            foreach (MatchupModel matchup in currentRound)
+            {
+                foreach (MatchupEntryModel me in matchup.Entries)
+                {
+                    foreach (PersonModel p in me.TeamCompeting.TeamMembers)
+                    {
+                        AlertPersonToNewRound(p, me.TeamCompeting.TeamName, matchup.Entries.Where(x => x.TeamCompeting != me.TeamCompeting).FirstOrDefault());
+                    }
+                }
+            }
+        }
+
+        private static void AlertPersonToNewRound(PersonModel p, string teamName, MatchupEntryModel competitor)
+        {
+
+            if(p.EmailAddress.Length == 0)
+            {
+                return;
+            }
+
+            List<string> to = new List<string>();
+            string subject = "";
+
+            StringBuilder body = new StringBuilder();
+
+
+            if(competitor!= null) 
+            {
+                subject = $"You have a new matchup with  {competitor.TeamCompeting.TeamName}";
+
+                body.AppendLine("<h1>You have a new matchup </h1>");
+                body.Append("<strong>Competitor: </strong>");
+                body.AppendLine(competitor.TeamCompeting.TeamName);
+                body.AppendLine();
+                body.AppendLine("Have a great time!");
+                body.AppendLine("~Tournament Tracker");
+            }
+            else
+            {
+                subject = "You have a bye week this round";
+
+                body.AppendLine("Enjoy your round off!");
+                body.AppendLine("~Tournament Tracker");
+            }
+
+            to.Add(p.EmailAddress);
+
+            EmailLogic.SendEmail(to, subject, body.ToString());
         }
 
         private static int CheckCurrentRound(this TournamentModel model)
