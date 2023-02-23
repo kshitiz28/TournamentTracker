@@ -160,9 +160,9 @@ namespace TrackerUI
             LoadMatchups((int)roundDropDown.SelectedItem);
         }
 
-        private bool IsValidData()
+        private string ValidateData()
         {
-            bool output = true;
+            string output = "";
 
             double teamOneScore = 0;
             double teamTwoScore = 0;
@@ -171,19 +171,21 @@ namespace TrackerUI
 
             bool scoreTwoValid = double.TryParse(teamTwoScoreValue.Text, out teamTwoScore);
 
-            if(!scoreOneValid || !scoreTwoValid)
+            if(!scoreOneValid)
             {
-                output = false;
+                output = "The score one valus is not a valid number.";
             }
-
-            if(teamOneScore == 0 && teamTwoScore == 0) 
+            else if (!scoreTwoValid)
             {
-                output = false;
+                output = "The score two valus is not a valid number.";
             }
-
-            if(teamOneScore == teamTwoScore)
+            else if (teamOneScore == 0 && teamTwoScore == 0) 
             {
-                output= false;
+                output = "You didn't enter a score for either team.";
+            }
+            else if(teamOneScore == teamTwoScore)
+            {
+                output= "You don't allow ties in this application.";
             }
 
             return output;
@@ -192,10 +194,12 @@ namespace TrackerUI
 
         private void scoreButton_Click(object sender, EventArgs e)
         {
+            string errorMessage = ValidateData();
 
-            if (!IsValidData())
+            if (errorMessage.Length > 0)
             {
-                MessageBox.Show("You need to enter valid data before we can score this matchup.");
+                MessageBox.Show($"Input Error: { errorMessage }");
+                return;
             }
 
             MatchupModel m = (MatchupModel)matchupListBox.SelectedItem;
@@ -247,10 +251,8 @@ namespace TrackerUI
             catch(Exception ex)
             {
                 MessageBox.Show($"The application had the following error: { ex.Message }");
-                throw;
+                return;
             }
-
-            
 
             LoadMatchups((int)roundDropDown.SelectedItem);
 
