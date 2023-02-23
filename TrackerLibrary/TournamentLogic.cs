@@ -130,9 +130,21 @@ namespace TrackerLibrary
                 {
                     output += 1;
                 }
+                else
+                {
+                    return output;
+                }
             }
 
-            return output;
+            // Tournament is complete
+            CompleteTournament(model);
+        }
+
+        private static void CompleteTournament(TournamentModel model)
+        {
+            GlobalConfig.Connection.CompleteTournament(model);
+
+
         }
 
         private static void AdvanceWinners(List<MatchupModel> models,TournamentModel tournament)
